@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobSimple — работа проще простого</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+    header { background-color: #2f80ed; color: white; padding: 2rem; text-align: center; }
+    h1 { margin: 0 0 0.5rem 0; font-size: 2rem; }
+    .button-main { background: #ffcc00; color: #000; padding: 1rem 2rem; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 1rem; }
+    .section { padding: 2rem; text-align: center; }
+    .form, .vacancies { background: white; padding: 2rem; border-radius: 12px; max-width: 600px; margin: 1rem auto; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    input, select, textarea { width: 100%; padding: 1rem; margin-top: 1rem; border-radius: 8px; border: 1px solid #ccc; }
+    footer { background: #333; color: white; text-align: center; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>JobSimple</h1>
+    <p>Работа найдётся — просто оставь заявку</p>
+    <button class="button-main" onclick="document.getElementById('form').scrollIntoView({behavior: 'smooth'});">Оставить заявку</button>
+  </header>
+
+  <section class="section">
+    <h2>Актуальные вакансии</h2>
+    <div class="vacancies">
+      <p><strong>Курьер (доставка WB)</strong> — от 40 000 ₽ / мес, Москва</p>
+      <p><strong>Сборщик заказов</strong> — смена 2200 ₽, Санкт-Петербург</p>
+      <p><strong>Менеджер маркетплейсов</strong> — удалёнка, от 35 000 ₽</p>
+    </div>
+  </section>
+
+  <section class="section" id="form">
+    <h2>Оставить заявку</h2>
+    <div class="form">
+      <form>
+        <input type="text" placeholder="Имя" required>
+        <input type="tel" placeholder="Телефон / Telegram" required>
+        <input type="text" placeholder="Город / Регион" required>
+        <select required>
+          <option value="">Тип занятости</option>
+          <option>Полный день</option>
+          <option>Частичная занятость</option>
+          <option>Удалённо</option>
+          <option>Подработка</option>
+        </select>
+        <textarea placeholder="Ваш опыт, навыки, пожелания"></textarea>
+        <button type="submit" class="button-main">Отправить заявку</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 JobSimple — Платформа для поиска работы</p>
+    <p>Контакты: <a href="https://t.me/вашбот" style="color:#ffcc00;">Telegram</a></p>
+  </footer>
+
+  <script>
+    document.querySelector("form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const name = document.querySelector("input[placeholder='Имя']").value;
+      const contact = document.querySelector("input[placeholder='Телефон / Telegram']").value;
+      const city = document.querySelector("input[placeholder='Город / Регион']").value;
+      const type = document.querySelector("select").value;
+      const experience = document.querySelector("textarea").value;
+
+      const message = `📥 Новая заявка с JobSimple:\n\n👤 Имя: ${name}\n📞 Контакт: ${contact}\n📍 Город: ${city}\n🕒 Занятость: ${type}\n🛠 Опыт: ${experience}`;
+
+      const token = "8164060674:AAFlIcnTetSJw8e86dC3-r0Un9SmJ0j6bWM";
+      const chat_id = "1626421205";
+      const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+      await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chat_id,
+          text: message
+        })
+      });
+
+      alert("Заявка отправлена! Мы с вами скоро свяжемся.");
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
